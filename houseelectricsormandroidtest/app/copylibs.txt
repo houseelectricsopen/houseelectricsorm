@@ -1,0 +1,6 @@
+cp ../../houseelectricsormbase/out/artifacts/houseelectricsormbase/houseelectricsormbase.jar libs/
+cp ../../houseelectricsormandroid/build/classes/artifacts/houseelectricsormandroid/houseelectricsormandroid.jar libs/
+cp ../../../../git/houseelectricsutil/out/artifacts/houseelectricsutil/houseelectricsutil.jar libs/
+cp ../../houseelectricsormbase/out/artifacts/houseelectricsormbasesrc/houseelectricsormbasesrc.jar libsrc/
+cp ../../houseelectricsormandroid/build/classes/artifacts/houseelectricsormandroidsrc/houseelectricsormandroidsrc.jar libsrc/
+cp ../../../../git/houseelectricsutil/out/artifacts/houseelectricsutilsrc/houseelectricsutilsrc.jar libsrc/

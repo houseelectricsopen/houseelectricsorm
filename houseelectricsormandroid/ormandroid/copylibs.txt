@@ -1,0 +1,2 @@
+cp ../../houseelectricsormbase/out/artifacts/houseelectricsormbase/houseelectricsormbase.jar libs/
+cp ../../../../git/houseelectricsutil/out/artifacts/houseelectricsutil/houseelectricsutil.jar libs/
