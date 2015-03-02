@@ -40,9 +40,10 @@ All queries and suggestions are welcome, particularly in the form of new (failin
 
 This is taken from houselectricsormandroidtest/AndroidOrmExamples
 
-####Define the data model - without database id columns</h4>
+####Define the data model - without database id columns
 
 '''
+
     public static class TestRoot
     {
         private String name;
