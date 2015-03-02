@@ -31,7 +31,8 @@ All queries and suggestions are welcome, particularly in the form of new (failin
 
 ###Project homeelectricsormandroid
 + android specific code
-+ Project homeelectricsormandroitest
+
+###Project homeelectricsormandroitest
 + An android app running all the unit tests
 + Click on "run tests" to run the tests
 
@@ -40,8 +41,8 @@ All queries and suggestions are welcome, particularly in the form of new (failin
 This is taken from houselectricsormandroidtest/AndroidOrmExamples
 
 ####Define the data model - without database id columns</h4>
-'''
-    public static class TestRoot
+
+'''public static class TestRoot
     {
         private String name;
         public String getName() {return name;}
