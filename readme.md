@@ -1,8 +1,6 @@
 #House Electrics ORM
 
 This is an implementation of an object relational mapping for sqlite on android.
-
-This is an implementation of an object relational mapping for sqlite on android.
 It contains a minimal set of features to map a java object model to a relational database in an android app but nevertheless places a low burden on the developer.
 
 Here are some of the features:
@@ -10,7 +8,8 @@ Here are some of the features:
 + List Support
 + Polymorphic References
 + Customizeable type to db field mapping
-+ Raw query s
++ Deep Loading
++ Raw queries
 + Lazy Loading
 
 Here is what is planned:
@@ -34,7 +33,7 @@ All queries and suggestions are welcome, particularly in the form of new (failin
 
 ###Project homeelectricsormandroitest
 + An android app running all the unit tests
-+ Click on "run tests" to run the tests
++ Run this app on a phone then click on "run tests"
 
 ##A basic CRUD example
 
@@ -50,8 +49,8 @@ This is taken from houselectricsormandroidtest/AndroidOrmExamples
         private TestDetail testDetail;
         public TestDetail getTestDetail() {return testDetail;}
         public void setTestDetail(TestDetail value) {this.testDetail = value;}
-        private List&lt;TestDetail> details = null;
-        public List&lt;TestDetail> getDetails() {return details;}
+        private List<TestDetail> details = null;
+        public List<TestDetail> getDetails() {return details;}
         public void setDetails(List&lt;TestDetail> value) {this.details=value;}
     }
 
@@ -115,7 +114,7 @@ This results in creation of 3 tables:
     dbContext.setSqliteDBAndroidStyle(da);
 
 ####Retrieve the domain object with a query and check values against what was saved
-    List&lt;Object> roots = dbContext.getAllByTypeShallow(TestRoot.class);
+    List<Object> roots = dbContext.getAllByTypeShallow(TestRoot.class);
     asserter.assertEqual(roots.size(), 2);
     TestRoot retrievedTestRoot = (TestRoot) roots.get(0);
     retrievedTestRoot = (TestRoot) dbContext.deepLoad(retrievedTestRoot);
