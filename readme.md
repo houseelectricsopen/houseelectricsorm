@@ -30,16 +30,17 @@ All queries and suggestions are welcome, particularly in the form of new (failin
 + Containers for the unit test that run the tests without android – classes SqliteJDBCCrudTest and SqliteJDBCLazyLoadingTest
 
 ###Project homeelectricsormandroid
-+android specific code
++ android specific code
 + Project homeelectricsormandroitest
 + An android app running all the unit tests
 + Click on "run tests" to run the tests
 
-                <h2>A basic CRUD example</h2>
+##A basic CRUD example
+
 This is taken from houselectricsormandroidtest/AndroidOrmExamples
 
-<h4>Define the data model - without database id columns</h4>
-<pre>
+####Define the data model - without database id columns</h4>
+'''
     public static class TestRoot
     {
         private String name;
@@ -63,33 +64,31 @@ This is taken from houselectricsormandroidtest/AndroidOrmExamples
        public void setDetailId(int value) {this.detailId=value;}
     }
 
-</pre>
-      <h4>Create or connect to the database</h4>
-<pre>
+'''
+####Create or connect to the database
+'''
         AndroidDbUtil androidDbUtil = new AndroidDbUtil();
         // determine the database location  (something like  xxxxxx/AndroidOrmExamples/testBasic.db)
         String dbAbsolutePath = androidDbUtil.getOrCreateExternalStorageDbPath("AndroidOrmExamples", "testBasic");
         // create a database service pointing at that location
         SqliteDatabaseAndroidService da = androidDbUtil.createDb(activity, dbAbsolutePath, true);
-</pre>
-       <h4>Create a database context based on the datamodel</h4>
-<pre>
+'''
+####Create a database context based on the datamodel
+'''
         // assume properties type in this package are references and Lists are references
         DbContext dbContext;
         dbContext = (new ReflectionDbContextFactory()).createFromRootClassAssumeReferencesWithinPackageOrLists(TestRoot.class);
         dbContext.setSqliteDBAndroidStyle(da);
         //create the db schema if necessary
         dbContext.createSchemaIfNotExists();
-</pre>
-           This results in creation of 3 tables:
-                <ul>
-                    <li>TestRoot - representing the TestRoot class</li>
-                    <li>TestDetail - representing the TestDetail class</li>
-                    <li>TestRoot_Details - representing the Details relationship from TestRoot to TestDetail</li>
-                </ul>
+'''
+This results in creation of 3 tables:
++ TestRoot - representing the TestRoot class
++ TestDetail - representing the TestDetail class
++ TestRoot_Details - representing the Details relationship from TestRoot to TestDetail
 
-    <h4> Create some data</h4>
-<pre>
+####Create some data
+'''
     TestRoot testRoot = new TestRoot();
     testRoot.setName("Top Cat");
     testRoot.setTestDetail(new TestDetail());
@@ -101,20 +100,19 @@ This is taken from houselectricsormandroidtest/AndroidOrmExamples
     testRoot.getDetails().add(new TestDetail());
     testRoot.getDetails().get(1).setDetailName("list item 2");
     testRoot.getDetails().get(1).setDetailId(432);
-
-</pre>
-    <h4>Add the objects to the context and save to database</h4>
-<pre>
+'''
+####Add the objects to the context and save to database
+'''
         dbContext.add(testRoot);
         // add an extra test object
         dbContext.add(new TestRoot());
         dbContext.saveChanges();
-</pre>
-    <h4>Create a new context for a clean test !</h4>
-<pre>
+'''
+####Create a new context for a clean test !
+'''
        dbContext = (new ReflectionDbContextFactory()).createFromRootClassAssumeReferencesWithinPackageOrLists(TestRoot.class);
        dbContext.setSqliteDBAndroidStyle(da);
-</pre>
+'''
     <h4>Retrieve the domain object with a query and check values against what was saved</h4>
 <pre>
     List&lt;Object> roots = dbContext.getAllByTypeShallow(TestRoot.class);
