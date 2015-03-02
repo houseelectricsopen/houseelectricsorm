@@ -42,8 +42,8 @@ This is taken from houselectricsormandroidtest/AndroidOrmExamples
 
 ####Define the data model - without database id columns</h4>
 
-''' java
-public static class TestRoot
+'''
+    public static class TestRoot
     {
         private String name;
         public String getName() {return name;}
