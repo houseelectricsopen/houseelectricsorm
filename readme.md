@@ -42,8 +42,6 @@ This is taken from houselectricsormandroidtest/AndroidOrmExamples
 
 ####Define the data model - without database id columns
 
-'''
-
     public static class TestRoot
     {
         private String name;
@@ -67,31 +65,31 @@ This is taken from houselectricsormandroidtest/AndroidOrmExamples
        public void setDetailId(int value) {this.detailId=value;}
     }
 
-'''
+
 ####Create or connect to the database
-'''
-        AndroidDbUtil androidDbUtil = new AndroidDbUtil();
-        // determine the database location  (something like  xxxxxx/AndroidOrmExamples/testBasic.db)
-        String dbAbsolutePath = androidDbUtil.getOrCreateExternalStorageDbPath("AndroidOrmExamples", "testBasic");
-        // create a database service pointing at that location
-        SqliteDatabaseAndroidService da = androidDbUtil.createDb(activity, dbAbsolutePath, true);
-'''
+
+    AndroidDbUtil androidDbUtil = new AndroidDbUtil();
+    // determine the database location  (something like  xxxxxx/AndroidOrmExamples/testBasic.db)
+    String dbAbsolutePath = androidDbUtil.getOrCreateExternalStorageDbPath("AndroidOrmExamples", "testBasic");
+    // create a database service pointing at that location
+    SqliteDatabaseAndroidService da = androidDbUtil.createDb(activity, dbAbsolutePath, true);
+
 ####Create a database context based on the datamodel
-'''
-        // assume properties type in this package are references and Lists are references
-        DbContext dbContext;
-        dbContext = (new ReflectionDbContextFactory()).createFromRootClassAssumeReferencesWithinPackageOrLists(TestRoot.class);
-        dbContext.setSqliteDBAndroidStyle(da);
-        //create the db schema if necessary
-        dbContext.createSchemaIfNotExists();
-'''
+
+    // assume properties type in this package are references and Lists are references
+    DbContext dbContext;
+    dbContext = (new ReflectionDbContextFactory()).createFromRootClassAssumeReferencesWithinPackageOrLists(TestRoot.class);
+    dbContext.setSqliteDBAndroidStyle(da);
+    //create the db schema if necessary
+    dbContext.createSchemaIfNotExists();
+
 This results in creation of 3 tables:
 + TestRoot - representing the TestRoot class
 + TestDetail - representing the TestDetail class
 + TestRoot_Details - representing the Details relationship from TestRoot to TestDetail
 
 ####Create some data
-'''
+
     TestRoot testRoot = new TestRoot();
     testRoot.setName("Top Cat");
     testRoot.setTestDetail(new TestDetail());
@@ -103,14 +101,14 @@ This results in creation of 3 tables:
     testRoot.getDetails().add(new TestDetail());
     testRoot.getDetails().get(1).setDetailName("list item 2");
     testRoot.getDetails().get(1).setDetailId(432);
-'''
+
 ####Add the objects to the context and save to database
-'''
-        dbContext.add(testRoot);
-        // add an extra test object
-        dbContext.add(new TestRoot());
-        dbContext.saveChanges();
-'''
+
+    dbContext.add(testRoot);
+    // add an extra test object
+    dbContext.add(new TestRoot());
+    dbContext.saveChanges();
+
 ####Create a new context for a clean test !
 '''
        dbContext = (new ReflectionDbContextFactory()).createFromRootClassAssumeReferencesWithinPackageOrLists(TestRoot.class);
