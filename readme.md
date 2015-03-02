@@ -19,9 +19,9 @@ Here is what is planned:
 + Data migration / multiple concurrent schema version support
 
 ##Support - Appeal for Comments
-                email support:
-               [codesupport@houseelectrics.com] (mailto:codesupport@houseelectrics.com)
-                All queries and suggestions are welcome, particularly in the form of new (failing) unit tests
+
+email support:  [codesupport@houseelectrics.com] (mailto:codesupport@houseelectrics.com)
+All queries and suggestions are welcome, particularly in the form of new (failing) unit tests
 
 ##Project Organisation</h2>
 ###Project homeelectricsormbase
