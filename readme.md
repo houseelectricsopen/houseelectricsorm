@@ -110,35 +110,33 @@ This results in creation of 3 tables:
     dbContext.saveChanges();
 
 ####Create a new context for a clean test !
-'''
-       dbContext = (new ReflectionDbContextFactory()).createFromRootClassAssumeReferencesWithinPackageOrLists(TestRoot.class);
-       dbContext.setSqliteDBAndroidStyle(da);
-'''
-    <h4>Retrieve the domain object with a query and check values against what was saved</h4>
-<pre>
+
+    dbContext = (new ReflectionDbContextFactory()).createFromRootClassAssumeReferencesWithinPackageOrLists(TestRoot.class);
+    dbContext.setSqliteDBAndroidStyle(da);
+
+####Retrieve the domain object with a query and check values against what was saved
     List&lt;Object> roots = dbContext.getAllByTypeShallow(TestRoot.class);
     asserter.assertEqual(roots.size(), 2);
     TestRoot retrievedTestRoot = (TestRoot) roots.get(0);
     retrievedTestRoot = (TestRoot) dbContext.deepLoad(retrievedTestRoot);
-
     asserter.assertEqual(retrievedTestRoot.getName(), testRoot.getName());
     asserter.assertEqual(retrievedTestRoot.getTestDetail().getDetailName(), testRoot.getTestDetail().getDetailName());
     asserter.assertEqual(retrievedTestRoot.getDetails().get(1).getDetailId(), testRoot.getDetails().get(1).getDetailId());
-</pre>
-  <h4>Make some change and update the database</h4>
-<pre>
+
+####Make some change and update the database
+
     retrievedTestRoot.getTestDetail().setDetailName("Top Dog");
     dbContext.update(retrievedTestRoot.getTestDetail());
     dbContext.delete(roots.get(1));
     dbContext.saveChanges();
-</pre>
-    <h4>Create a new context - for a clean test !</h4>
-<pre>
+
+####Create a new context - for a clean test !
+
     dbContext = (new ReflectionDbContextFactory()).createFromRootClassAssumeReferencesWithinPackageOrLists(TestRoot.class);
     dbContext.setSqliteDBAndroidStyle(da);
-</pre>
-   <h4>Retrieve objects and check changes have been saved</h4>
-<pre>
+
+####Retrieve objects and check changes have been saved
+
     roots = dbContext.getAllByTypeShallow(TestRoot.class);
     //check the delete worked
     asserter.assertEqual(roots.size(), 1);
@@ -146,6 +144,3 @@ This results in creation of 3 tables:
     TestRoot retrievedRoot0 = (TestRoot) roots.get(0);
     retrievedRoot0 = (TestRoot) dbContext.deepLoad(retrievedRoot0);
     asserter.assertEqual(retrievedRoot0.getTestDetail().getDetailName(), "Top Dog");
-</pre>
-
-See the [user guide](docs/userguide.html) for more detail
