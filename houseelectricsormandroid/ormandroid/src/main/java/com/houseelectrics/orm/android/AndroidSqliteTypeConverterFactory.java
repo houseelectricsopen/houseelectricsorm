@@ -5,6 +5,7 @@ import android.database.Cursor;
 import com.houseelectrics.orm.SqliteDatabaseService;
 
 
+import java.io.File;
 import java.lang.reflect.Type;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -155,6 +156,27 @@ public class AndroidSqliteTypeConverterFactory
         };
         fieldTypeMappings.add(converter);
 
+        converter = new SqliteDatabaseAndroidService.AndroidSqliteTypeConverter()
+        {
+            @Override   public void write(ContentValues contentValues, String propertyName,  Object value)
+            {
+                File file = (File)value;
+                String str = file==null?null:file.getPath();
+                contentValues.put(propertyName, str);
+            }
+            @Override  public Object read(Cursor rs, int zeroIndex)
+            {
+                File file = null;
+                String str = rs.isNull(zeroIndex)?null:rs.getString(zeroIndex);
+                if (str!=null) file = new File(str);
+                return file;
+            }
+            @Override
+            public String getSqlitePropertyType()  {  return "TEXT"; }
+            @Override
+            public boolean matches(Class aClass, Type[] types)    { return aClass==File.class;  }
+        };
+        fieldTypeMappings.add(converter);
            /*
         stores dates as epoch millisecond time - view in db with:
         SELECT  datetime(DateField/1000, 'unixepoch')

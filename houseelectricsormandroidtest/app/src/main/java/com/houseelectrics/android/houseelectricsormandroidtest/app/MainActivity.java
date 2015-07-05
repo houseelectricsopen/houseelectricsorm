@@ -5,14 +5,14 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.support.v7.app.ActionBarActivity;
+//import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import com.google.dexmaker.stock.ProxyBuilder;
+//import com.google.dexmaker.stock.ProxyBuilder;
 import com.houseelectrics.orm.ProxyFactory;
 import com.houseelectrics.orm.SqliteDatabaseService;
 import com.houseelectrics.orm.android.AndroidDbUtil;
@@ -20,6 +20,7 @@ import com.houseelectrics.orm.android.SqliteDatabaseAndroidService;
 import com.houseelectrics.orm.test.Asserter;
 import com.houseelectrics.orm.test.CrudTest;
 import com.houseelectrics.orm.test.LazyLoadingTest;
+import com.houseelectrics.orm.test.MigrationTest;
 
 import java.io.File;
 import java.io.IOException;
@@ -210,7 +211,18 @@ public class MainActivity extends Activity
             testCount++;
             messageText.setText(messageText.getText() + " testPolymorphicStackReferences !");
 
-           // dexTest(asserter);
+            da = createDb(dbAbsolutePath);
+
+            (new MigrationTest()).testAddField(asserter, da);
+            testCount++;
+            messageText.setText(messageText.getText() + " MigrationTest.testAddNewField !");
+            (new MigrationTest()).testAddReference(asserter, da);
+            testCount++;
+
+
+            messageText.setText(messageText.getText() + " MigrationTest.testAddReference !");
+
+            // dexTest(asserter);
             testCount++;
             messageText.setText(messageText.getText() + " dexTest !");
 

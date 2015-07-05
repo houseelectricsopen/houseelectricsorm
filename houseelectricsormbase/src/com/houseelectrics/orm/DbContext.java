@@ -74,6 +74,18 @@ public class DbContext implements ProxyFactory.ObjectLoader
 
     public void createSchemaIfNotExists() throws Exception
     {
+        createSchemaIfNotExists(false);
+    }
+
+
+    public void createSchemaIfNotExistsAddNewFieldsToExistingTables() throws Exception
+    {
+        createSchemaIfNotExists(true);
+    }
+
+
+    public void createSchemaIfNotExists(final boolean addNewFields) throws Exception
+    {
         if (entityTypeLeaseToMostDependant==null)
           {
               throw new RuntimeException("trying to create schema but there are no entities");
@@ -91,7 +103,7 @@ public class DbContext implements ProxyFactory.ObjectLoader
                             for (String listPropName : entityType.getPropertyName2DetailEntityType().keySet())
                             {
                                 ListEntityType let = entityType.getPropertyName2DetailEntityType().get(listPropName);
-                                createTableIfNotExists(let, db);
+                                createTableIfNotExists(let, db, addNewFields);
                             }
                             for (EntityField entityField : entityType.getFields())
                             {
@@ -101,7 +113,7 @@ public class DbContext implements ProxyFactory.ObjectLoader
                                     createTableIfNotExists(pret, db);
                                 }
                             }
-                            createTableIfNotExists(entityType, db);
+                            createTableIfNotExists(entityType, db, addNewFields);
                         }
                     }
                 };
@@ -739,6 +751,12 @@ public class DbContext implements ProxyFactory.ObjectLoader
         return eiField;
     }
 
+    public void printAddColumnSql(String tablename, EntityField field, StringBuffer sb)
+    {
+        String sqliteType = getSqliteDBAndroidStyle().getSqliteType(field);
+        sb.append("alter table "+ tablename + " add column " + field.getProperty().getPropertyName() + " " + sqliteType +";");
+    }
+
     public void  printCreateTableIfNotExists(EntityType entityType, StringBuffer sb)
     {
         sb.append("create table if not exists ");
@@ -761,15 +779,47 @@ public class DbContext implements ProxyFactory.ObjectLoader
         sb.append(");");
     }
 
+
+
     public void createTableIfNotExists(EntityType entityType, SqliteDatabaseService db) throws Exception
     {
+        createTableIfNotExists(entityType, db, false);
+    }
+
+
+    public void createTableIfNotExists(EntityType entityType, SqliteDatabaseService db, boolean addNewFields) throws Exception
+    {
+
+        if (addNewFields)
+        {
+            SqliteMetaDataUtil util = new SqliteMetaDataUtil();
+            SqliteMetaDataUtil.TableMetaData tmd =  util.extractTableMetadataNullIfNotExists(db, entityType.getTablename());
+            if (tmd !=null)
+            {
+                List<EntityField> efs =  entityType.getFields();
+                for (int done=0; done<efs.size(); done++)
+                {
+                    EntityField ef = efs.get(done);
+                    String efName = ef.getProperty().getPropertyName();
+                    if (!tmd.name2Column.containsKey(efName))
+                    {
+                        StringBuffer sbField = new StringBuffer();
+                        printAddColumnSql(entityType.getTablename(), ef, sbField);
+                        String strAdd = sbField.toString();
+                        db.execSQL(strAdd);
+                    }
+                }
+            }
+        }
         StringBuffer sb = new StringBuffer();
-
         printCreateTableIfNotExists(entityType, sb);
-
         String createTableStatement = sb.toString();
         db.execSQL(createTableStatement);
+
+
     }
+
+
 
     public List<Object> excecuteRawQuery(Class resultClass, String strSelection) throws Exception
     {
